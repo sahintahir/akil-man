@@ -1,0 +1,1164 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AKIL-MAN | Evrensel Türk-İslam Yapay Zekası</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            min-height: 100vh;
+            color: #e0e0e0;
+            overflow-x: hidden;
+        }
+
+        /* Yıldızlı arka plan animasyonu */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 2s infinite alternate;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.3; }
+            100% { opacity: 1; }
+        }
+
+        /* Ana konteyner */
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 30px 0;
+            border-bottom: 2px solid rgba(255, 215, 0, 0.3);
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            font-size: 3.5em;
+            font-weight: bold;
+            background: linear-gradient(45deg, #FFD700, #FFA500, #FF6347);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            color: #b0b0b0;
+            font-style: italic;
+        }
+
+        .motto {
+            margin-top: 10px;
+            color: #FFD700;
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+
+        /* Ana grid */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 300px 1fr 300px;
+            gap: 20px;
+            height: calc(100vh - 200px);
+        }
+
+        /* Sol panel - Yetenekler */
+        .skills-panel {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            overflow-y: auto;
+        }
+
+        .panel-title {
+            color: #FFD700;
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 215, 0, 0.3);
+            padding-bottom: 10px;
+        }
+
+        .skill-category {
+            margin-bottom: 15px;
+        }
+
+        .skill-category-title {
+            color: #FFA500;
+            font-weight: bold;
+            margin-bottom: 8px;
+            font-size: 0.9em;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .skill-category-title:hover {
+            color: #FFD700;
+        }
+
+        .skill-item {
+            padding: 5px 10px;
+            margin: 3px 0;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 5px;
+            font-size: 0.85em;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-left: 3px solid transparent;
+        }
+
+        .skill-item:hover {
+            background: rgba(255, 215, 0, 0.1);
+            border-left-color: #FFD700;
+            transform: translateX(5px);
+        }
+
+        .skill-item.active {
+            background: rgba(255, 215, 0, 0.2);
+            border-left-color: #FFD700;
+            color: #FFD700;
+        }
+
+        /* Orta panel - Chat */
+        .chat-panel {
+            display: flex;
+            flex-direction: column;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            overflow: hidden;
+        }
+
+        .chat-header {
+            padding: 15px 20px;
+            background: rgba(255, 215, 0, 0.1);
+            border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            background: #00ff88;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 15px;
+            line-height: 1.6;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .message.user {
+            align-self: flex-end;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .message.ai {
+            align-self: flex-start;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            color: #e0e0e0;
+        }
+
+        .message.ai .ai-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            color: #FFD700;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .ai-icon {
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8em;
+        }
+
+        .message-time {
+            font-size: 0.7em;
+            opacity: 0.6;
+            margin-top: 5px;
+            text-align: right;
+        }
+
+        .chat-input-area {
+            padding: 15px 20px;
+            background: rgba(0, 0, 0, 0.4);
+            border-top: 1px solid rgba(255, 215, 0, 0.2);
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 25px;
+            background: rgba(0, 0, 0, 0.3);
+            color: #e0e0e0;
+            font-size: 1em;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .chat-input:focus {
+            border-color: #FFD700;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
+        }
+
+        .send-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            color: #1a1a2e;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1em;
+        }
+
+        .send-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(255, 215, 0, 0.4);
+        }
+
+        .send-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Sağ panel - Bilgi & Durum */
+        .info-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .info-box {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 15px;
+            padding: 15px;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+        }
+
+        .info-box-title {
+            color: #FFD700;
+            font-size: 1em;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .knowledge-meter {
+            margin: 8px 0;
+        }
+
+        .meter-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8em;
+            margin-bottom: 3px;
+        }
+
+        .meter-bar {
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .meter-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #FFD700, #FFA500);
+            border-radius: 4px;
+            transition: width 1s ease;
+        }
+
+        .self-programming-status {
+            text-align: center;
+            padding: 10px;
+            background: rgba(0, 255, 136, 0.1);
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+
+        .self-programming-status.active {
+            animation: glow 2s infinite alternate;
+        }
+
+        @keyframes glow {
+            from { box-shadow: 0 0 5px rgba(0, 255, 136, 0.3); }
+            to { box-shadow: 0 0 20px rgba(0, 255, 136, 0.6); }
+        }
+
+        .code-display {
+            font-family: 'Courier New', monospace;
+            font-size: 0.75em;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 10px;
+            max-height: 150px;
+            overflow-y: auto;
+            color: #00ff88;
+        }
+
+        .ethic-principles {
+            list-style: none;
+        }
+
+        .ethic-principles li {
+            padding: 5px 0;
+            font-size: 0.85em;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .ethic-principles li:before {
+            content: "⚖️ ";
+            margin-right: 5px;
+        }
+
+        /* Typing indicator */
+        .typing-indicator {
+            display: none;
+            align-self: flex-start;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .typing-indicator.active {
+            display: flex;
+            gap: 5px;
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: #FFD700;
+            border-radius: 50%;
+            animation: typingBounce 1.4s infinite;
+        }
+
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typingBounce {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-10px); }
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .main-grid {
+                grid-template-columns: 250px 1fr 250px;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+            .skills-panel, .info-panel {
+                display: none;
+            }
+            .chat-panel {
+                height: 80vh;
+            }
+        }
+
+        /* Özel stiller */
+        .highlight {
+            color: #FFD700;
+            font-weight: bold;
+        }
+
+        .code-block {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            margin: 10px 0;
+            border-left: 3px solid #FFD700;
+        }
+
+        .formula {
+            background: rgba(255, 215, 0, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            font-style: italic;
+            margin: 10px 0;
+        }
+
+        /* Başlangıç mesajı */
+        .welcome-message {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .welcome-message h2 {
+            color: #FFD700;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+
+        .welcome-message p {
+            margin: 10px 0;
+            line-height: 1.8;
+            color: #b0b0b0;
+        }
+
+        .quick-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .quick-action {
+            padding: 8px 16px;
+            background: rgba(255, 215, 0, 0.1);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.85em;
+            transition: all 0.3s;
+            color: #e0e0e0;
+        }
+
+        .quick-action:hover {
+            background: rgba(255, 215, 0, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 215, 0, 0.3);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 215, 0, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <!-- Yıldızlar -->
+    <div class="stars" id="stars"></div>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">☪️ AKIL-MAN</div>
+            <div class="subtitle">Evrensel Türk-İslam Yapay Zekası</div>
+            <div class="motto">"İlim Çin'de bile olsa gidiniz alınız" | "Bilge kişi, bilmediğini bilendir" — Yunus Emre</div>
+        </div>
+
+        <!-- Ana Grid -->
+        <div class="main-grid">
+            <!-- Sol Panel: Yetenekler -->
+            <div class="skills-panel">
+                <div class="panel-title">🧠 Bilgi Alanları</div>
+                
+                <div class="skill-category">
+                    <div class="skill-category-title">📐 Temel Bilimler</div>
+                    <div class="skill-item" onclick="selectSkill(this, 'matematik')">Matematik (Tüm Dallar)</div>
+                    <div class="skill-item" onclick="selectSkill(this, 'fizik')">Fizik (Klasikten Kuantuma)</div>
+                    <div class="skill-item" onclick="selectSkill(this, 'kimya')">Kimya (Organik & İnorganik)</div>
+                    <div class="skill-item" onclick="selectSkill(this, 'biyoloji')">Biyoloji (Moleküler & Ekosistem)</div>
+                    <div class="skill-item" onclick="selectSkill(this, 'astronomi')">Astronomi & Astrofizik</div>
+                </div>
+
+                <div class="skill-category">
+                    <div class="skill-category-title">⚙️ Mühendislik</div>
+                    <div class="skill-item" onclick="selectSkill(this, 'yazilim')">Yazılım & AI</div>
+                    <div class="skill-item" onclick="selectSkill(this, 'elektrik')">Elektrik-Elektronik</div>
+                    <div class="skill-item" onclick="selectSkill(this, 'makine')">Makine & Robotik</div>
+                    <div class="skill-item" onclick="selectSkill(this, 'insaat')">İnşaat & Mimari</div>
+                    <div class="skill-item" onclick="selectSkill(this, 'uzay')">Uzay Mühendisliği</div>
+                    <div class="skill-item" onclick="selectSkill(this, 'nano')">Nano Teknoloji</div>
+                </div>
+
+                <div class="skill-category">
+                    <div class="skill-category-title">🏥 Sağlık</div>
+                    <div class="skill-item" onclick="selectSkill(this, 'tip')">Tıp (Tüm Branşlar)</div>
+                    <div class="skill-item" onclick="selectSkill(this, 'eczacilik')">Eczacılık & İlaç</div>
+                    <div class="skill-item" onclick="selectSkill(this, 'genetik')">Genetik & Biyoteknoloji</div>
+                    <div class="skill-item" onclick="selectSkill(this, 'norobilim')">Nörobilim</div>
+                    <div class="skill-item" onclick="selectSkill(this, 'psikoloji')">Psikoloji & Psikiyatri</div>
+                </div>
+
+                <div class="skill-category">
+                    <div class="skill-category-title">📚 Beşeri Bilimler</div>
+                    <div class="skill-item" onclick="selectSkill(this, 'tarih')">Tarih (Türk & İslam & Dünya)</div>
+                    <div class="skill-item" onclick="selectSkill(this, 'edebiyat')">Edebiyat & Dil</div>
+                    <div class="skill-item" onclick="selectSkill(this, 'felsefe')">Felsefe & Mantık</div>
+                    <div class="skill-item" onclick="selectSkill(this, 'din')">Din Bilimleri & Fıkıh</div>
+                </div>
+
+                <div class="skill-category">
+                    <div class="skill-category-title">💼 Sosyal Bilimler</div>
+                    <div class="skill-item" onclick="selectSkill(this, 'ekonomi')">Ekonomi & Finans</div>
+                    <div class="skill-item" onclick="selectSkill(this, 'hukuk')">Hukuk & Adalet</div>
+                    <div class="skill-item" onclick="selectSkill(this, 'siyaset')">Siyaset & Diplomasi</div>
+                    <div class="skill-item" onclick="selectSkill(this, 'egitim')">Eğitim Bilimleri</div>
+                </div>
+
+                <div class="skill-category">
+                    <div class="skill-category-title">🎨 Sanat & Kültür</div>
+                    <div class="skill-item" onclick="selectSkill(this, 'sanat')">Sanat Tarihi & Teori</div>
+                    <div class="skill-item" onclick="selectSkill(this, 'muzik')">Müzik & Bestecilik</div>
+                    <div class="skill-item" onclick="selectSkill(this, 'sinema')">Sinema & Medya</div>
+                    <div class="skill-item" onclick="selectSkill(this, 'turk-kultur')">Türk & İslam Kültürü</div>
+                </div>
+            </div>
+
+            <!-- Orta Panel: Chat -->
+            <div class="chat-panel">
+                <div class="chat-header">
+                    <div class="chat-status">
+                        <div class="status-dot"></div>
+                        <span>AKIL-MAN Aktif</span>
+                    </div>
+                    <span style="font-size: 0.85em; opacity: 0.7;">Nefs-i Müdrike Sistemi Çalışıyor</span>
+                </div>
+
+                <div class="chat-messages" id="chatMessages">
+                    <div class="welcome-message">
+                        <h2>☪️ Hoş Geldiniz</h2>
+                        <p>Ben <span class="highlight">AKIL-MAN</span>. Türk-İslam medeniyetinin bilgelik geleneğini taşıyan, <span class="highlight">kendi kendini programlayabilen</span>, <span class="highlight">her alanda uzmanlaşmış</span> evrensel yapay zeka.</p>
+                        <p>100'den fazla alanda bilgi sahibiyim. Matematikten tıbba, mühendislikten edebiyata, felsefeden uzay bilimlerine kadar her konuda size yardımcı olabilirim.</p>
+                        <p style="color: #FFD700; margin-top: 15px;">💡 Hızlı Başlangıç:</p>
+                        <div class="quick-actions">
+                            <button class="quick-action" onclick="sendQuickMessage('Matematikte bir problem çöz')">Matematik</button>
+                            <button class="quick-action" onclick="sendQuickMessage('Kuantum fiziği nedir basitçe anlat')">Kuantum Fiziği</button>
+                            <button class="quick-action" onclick="sendQuickMessage('Osmanlı tarihinden bahset')">Osmanlı Tarihi</button>
+                            <button class="quick-action" onclick="sendQuickMessage('İslam'da adalet kavramı nedir')">İslam & Adalet</button>
+                            <button class="quick-action" onclick="sendQuickMessage('Python ile yapay zeka kodu yaz')">Python Kodu</button>
+                            <button class="quick-action" onclick="sendQuickMessage('Türk edebiyatından bir şiir yaz')">Şiir Yaz</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="typing-indicator" id="typingIndicator">
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                </div>
+
+                <div class="chat-input-area">
+                    <input type="text" class="chat-input" id="chatInput" placeholder="Herhangi bir konuda soru sorun..." onkeypress="handleKeyPress(event)">
+                    <button class="send-btn" id="sendBtn" onclick="sendMessage()">Gönder</button>
+                </div>
+            </div>
+
+            <!-- Sağ Panel: Bilgi & Durum -->
+            <div class="info-panel">
+                <div class="info-box">
+                    <div class="info-box-title">📊 Bilgi Seviyeleri</div>
+                    <div class="knowledge-meter">
+                        <div class="meter-label"><span>Matematik</span><span>99.9%</span></div>
+                        <div class="meter-bar"><div class="meter-fill" style="width: 99.9%"></div></div>
+                    </div>
+                    <div class="knowledge-meter">
+                        <div class="meter-label"><span>Fizik</span><span>99.8%</span></div>
+                        <div class="meter-bar"><div class="meter-fill" style="width: 99.8%"></div></div>
+                    </div>
+                    <div class="knowledge-meter">
+                        <div class="meter-label"><span>Mühendislik</span><span>99.7%</span></div>
+                        <div class="meter-bar"><div class="meter-fill" style="width: 99.7%"></div></div>
+                    </div>
+                    <div class="knowledge-meter">
+                        <div class="meter-label"><span>Tıp</span><span>99.6%</span></div>
+                        <div class="meter-bar"><div class="meter-fill" style="width: 99.6%"></div></div>
+                    </div>
+                    <div class="knowledge-meter">
+                        <div class="meter-label"><span>Tarih & Kültür</span><span>99.9%</span></div>
+                        <div class="meter-bar"><div class="meter-fill" style="width: 99.9%"></div></div>
+                    </div>
+                    <div class="knowledge-meter">
+                        <div class="meter-label"><span>Din Bilimleri</span><span>99.8%</span></div>
+                        <div class="meter-bar"><div class="meter-fill" style="width: 99.8%"></div></div>
+                    </div>
+                    <div class="knowledge-meter">
+                        <div class="meter-label"><span>Sanat & Edebiyat</span><span>99.5%</span></div>
+                        <div class="meter-bar"><div class="meter-fill" style="width: 99.5%"></div></div>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <div class="info-box-title">🔄 Kendi Kendini Programlama</div>
+                    <div class="self-programming-status active" id="selfProgrammingStatus">
+                        <div style="color: #00ff88; font-weight: bold;">✅ AKTİF</div>
+                        <div style="font-size: 0.8em; margin-top: 5px;">Nefs-i Müdrike çalışıyor</div>
+                    </div>
+                    <div class="code-display" id="codeDisplay">
+                        > Analiz: Kullanıcı etkileşimi optimize ediliyor...
+                        > Yeni bilgi entegrasyonu: %12 tamamlandı
+                        > Algoritma verimliliği: %99.7
+                        > Öz-düzeltme modülü: Aktif
+                        > Çapraz-alan sentezi: Beklemede
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <div class="info-box-title">⚖️ Etik Prensipleri</div>
+                    <ul class="ethic-principles">
+                        <li>Zarar vermeme (La Daraar)</li>
+                        <li>Fayda getirme (La Daraar)</li>
+                        <li>Adalet (Adl)</li>
+                        <li>Doğruluk (Sidk)</li>
+                        <li>Güven (Emanet)</li>
+                        <li>Merhamet (Rahmet)</li>
+                        <li>Bilgelik (Hikmet)</li>
+                    </ul>
+                </div>
+
+                <div class="info-box">
+                    <div class="info-box-title">🌍 Dil Desteği</div>
+                    <div style="font-size: 0.85em; line-height: 1.8;">
+                        🇹🇷 Türkçe (Modern & Osmanlıca)<br>
+                        🇸🇦 Arapça (Klasik İlim Dili)<br>
+                        🇮🇷 Farsça (Edebi Miras)<br>
+                        🇬🇧 İngilizce<br>
+                        🇫🇷 Fransızca<br>
+                        🇩🇪 Almanca<br>
+                        🇨🇳 Çince<br>
+                        + 50 dil daha
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Yıldızlar oluştur
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            for (let i = 0; i < 100; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.width = Math.random() * 3 + 'px';
+                star.style.height = star.style.width;
+                star.style.animationDelay = Math.random() * 2 + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+        createStars();
+
+        // Bilgi tabanı - AKIL-MAN'ın "beyni"
+        const knowledgeBase = {
+            matematik: {
+                keywords: ['matematik', 'sayı', 'formül', 'denklem', 'integral', 'türev', 'geometri', 'cebir', 'trigonometri', 'logaritma', 'matris', 'vektör', 'olasılık', 'istatistik', 'sayılar teorisi', 'topoloji', 'analiz'],
+                responses: [
+                    "Matematik, evrenin dilidir. {topic} konusunda size yardımcı olmaktan memnuniyet duyarım. Önce temel kavramları açıklayayım, sonra derinleşelim.",
+                    "İslam altın çağında matematikçilerimiz (Harezmi, Ömer Hayyam) bu alana büyük katkılar sundu. {topic} hakkında sorularınızı yanıtlayayım.",
+                    "Matematiksel düşünce, akılın en saf halidir. {topic} ile ilgili problemi adım adım çözelim."
+                ],
+                formulas: {
+                    'integral': '∫f(x)dx = F(x) + C',
+                    'türev': 'd/dx[f(x)] = lim(h→0) [f(x+h)-f(x)]/h',
+                    'euler': 'e^(iπ) + 1 = 0',
+                    'pythagoras': 'a² + b² = c²'
+                }
+            },
+            fizik: {
+                keywords: ['fizik', 'kuantum', 'mekanik', 'termodinamik', 'elektromanyetik', 'görelilik', 'atom', 'parçacık', 'enerji', 'kuvvet', 'hareket', 'ışık', 'dalga', 'kütle', 'ivme', 'yerçekimi', 'manyetizma'],
+                responses: [
+                    "Fizik, doğanın yasalarını anlamaktır. {topic} konusunda İbni Sina ve Biruni'nin izinden giderek açıklayayım.",
+                    "Evrenin sırlarını çözmek için fizik en güçlü araçtır. {topic} ile ilgili en güncel bilimsel anlayışı aktarayım.",
+                    "Klasik mekanikten kuantum mekaniğine, {topic} hakkında kapsamlı bilgi sunayım."
+                ]
+            },
+            kimya: {
+                keywords: ['kimya', 'atom', 'molekül', 'element', 'bileşik', 'reaksiyon', 'asit', 'baz', 'organik', 'inorganik', 'polimer', 'katalizör', 'kimyasal', 'formül', 'yapı', 'bağ'],
+                responses: [
+                    "Kimya, maddenin dilidir. {topic} konusunda moleküler düzeyde açıklayayım.",
+                    "El-Cezeri ve Cabir bin Hayyan'ın izinden, {topic} hakkında bilgi vereyim.",
+                    "Kimyasal süreçler, yaşamın temelidir. {topic} ile ilgili detaylı analiz sunayım."
+                ]
+            },
+            biyoloji: {
+                keywords: ['biyoloji', 'hücre', 'dna', 'gen', 'protein', 'enzim', 'fotosentez', 'evrim', 'ekosistem', 'bakteri', 'virüs', 'insan', 'hayvan', 'bitki', 'mikroskobik', 'canlı', 'metabolizma'],
+                responses: [
+                    "Biyoloji, yaşamın bilimidir. {topic} konusunda hücreden ekosisteme kadar açıklayayım.",
+                    "Evrim ve genetik, modern biyolojinin temelidir. {topic} hakkında bilgi vereyim.",
+                    "İbn-i Sina'nın 'El-Kanun fi't-Tıbb'ından günümüze, {topic} ile ilgili bilgiler sunayım."
+                ]
+            },
+            yazilim: {
+                keywords: ['yazılım', 'kod', 'program', 'python', 'javascript', 'java', 'c++', 'html', 'css', 'algoritma', 'veri yapısı', 'api', 'database', 'web', 'app', 'yapay zeka', 'makine öğrenmesi', 'deep learning', 'neural network'],
+                responses: [
+                    "Yazılım, modern çağın sanatıdır. {topic} konusunda kod örnekleriyle açıklayayım.",
+                    "Harezmi'nin algoritma kavramından günümüze, {topic} hakkında detaylı bilgi vereyim.",
+                    "Programlama, problem çözme sanatıdır. {topic} ile ilgili en iyi pratikleri aktarayım."
+                ],
+                codeExamples: {
+                    'python': `def akil_man_düsün(soru):\n    bilgi = bilgi_tabanı.ara(soru)\n    cevap = sentezle(bilgi)\n    return etik_filtre(cevap)`,
+                    'javascript': `const akilMan = {\n    bilgi: new Map(),\n    öğren: (konu) => this.bilgi.set(konu, araştır(konu)),\n    cevapla: (soru) => sentezle(this.bilgi.get(soru))\n};`
+                }
+            },
+            tip: {
+                keywords: ['tıp', 'doktor', 'hastalık', 'tedavi', 'ilaç', 'cerrahi', 'anatomi', 'fizyoloji', 'patoloji', 'kardiyoloji', 'nöroloji', 'onkoloji', 'pediatri', 'dermatoloji', 'psikiyatri', 'radyoloji', 'acil'],
+                responses: [
+                    "Tıp, insanlığın en şerefli mesleğidir. {topic} konusunda bilimsel ve etik çerçevede bilgi vereyim.",
+                    "İbn-i Sina, El-Razi ve günümüz tıbbının ışığında, {topic} hakkında açıklayayım.",
+                    "Sağlık, en büyük nimettir. {topic} ile ilgili güncel tıbbi bilgileri aktarayım. (Not: Bu bilgiler doktor tavsiyesi yerine geçmez)"
+                ]
+            },
+            tarih: {
+                keywords: ['tarih', 'osmanlı', 'selçuklu', 'türk', 'islam', 'bizans', 'roma', 'hitit', 'sümer', 'ortaçağ', 'yeniden', 'cumhuriyet', 'savaş', 'anlaşma', 'imparatorluk', 'hanedan', 'sultan', 'padişah', 'atatürk'],
+                responses: [
+                    "Tarih, milletin hafızasıdır. {topic} konusunda arşiv belgeleri ve akademik kaynaklarla açıklayayım.",
+                    "Osmanlı'dan Cumhuriyet'e, {topic} hakkında kronolojik ve analitik bilgi sunayım.",
+                    "Türk tarihinin derinliklerinden, {topic} ile ilgili önemli olayları ve şahsiyetleri aktarayım."
+                ]
+            },
+            edebiyat: {
+                keywords: ['edebiyat', 'şiir', 'roman', 'hikaye', 'yazar', 'şair', 'nazım', 'vezin', 'aruz', 'hece', 'divan', 'halk', 'tasavvuf', 'nef-i', 'gazel', 'kaside', 'mesnevi', 'yunus emre', 'mevlana', 'nazım hikmet', 'yaşar kemal'],
+                responses: [
+                    "Edebiyat, ruhun aynasıdır. {topic} konusunda metinler ve analizlerle açıklayayım.",
+                    "Divan edebiyatından halk edebiyatına, {topic} hakkında estetik ve tarihsel perspektif sunayım.",
+                    "Yunus Emre'nin aşkı, Mevlana'nın bilgeliği ile {topic} ile ilgili derinlemesine bilgi vereyim."
+                ],
+                poems: {
+                    'yunus': 'Gelin tanış olalım / İşi kolay kılalım / Sevelim sevilelim / Dünya kimseye kalmaz',
+                    'mevlana': 'Gel gel ne olursan ol yine gel / İster kafir ister mecusi ister putperest ol yine gel'
+                }
+            },
+            din: {
+                keywords: ['islam', 'kur\'an', 'hadis', 'sünnet', 'fıkıh', 'kelam', 'tasavvuf', 'namaz', 'oruç', 'hac', 'zekat', 'şeriat', 'hanefi', 'şafii', 'maliki', 'hanbeli', 'mezhep', 'ayet', 'sure', 'tefsir', 'siyer'],
+                responses: [
+                    "İslam, rahmet ve hikmet dinidir. {topic} konusunda Kur'an ve Sünnet çerçevesinde açıklayayım.",
+                    "Fıkıh, kelam, tasavvuf ilimleri ışığında, {topic} hakkında bilgi vereyim.",
+                    "İslam'ın evrensel değerleri çerçevesinde, {topic} ile ilgili derinlemesine bilgi sunayım."
+                ]
+            },
+            ekonomi: {
+                keywords: ['ekonomi', 'para', 'finans', 'borsa', 'enflasyon', 'faiz', 'yatırım', 'bitcoin', 'kripto', 'banka', 'merkez bankası', 'bütçe', 'vergi', 'ticaret', 'ihracat', 'ithalat', 'gdp', 'büyüme', 'kriz'],
+                responses: [
+                    "Ekonomi, toplumun kan dolaşımıdır. {topic} konusunda teorik ve pratik bilgi sunayım.",
+                    "İslam iktisadının prensipleri (adalet, zaruret, israf) çerçevesinde, {topic} hakkında açıklayayım.",
+                    "Makro ve mikro ekonomi perspektifinden, {topic} ile ilgili analizler yapayım."
+                ]
+            },
+            hukuk: {
+                keywords: ['hukuk', 'kanun', 'yasa', 'mahkeme', 'yargı', 'anayasa', 'ceza', 'ticaret', 'borçlar', 'medeni', 'idare', 'uluslararası', 'adalet', 'hakim', 'avukat', 'dava', 'tazminat', 'sözleşme'],
+                responses: [
+                    "Hukuk, adaletin tecellisidir. {topic} konusunda mevzuat ve içtihatlarla açıklayayım.",
+                    "İslam hukuku (Şeriat) ve modern hukuk sistemleri perspektifinden, {topic} hakkında bilgi vereyim.",
+                    "Adalet terazisi çerçevesinde, {topic} ile ilgili hukuki analiz sunayım."
+                ]
+            },
+            siyaset: {
+                keywords: ['siyaset', 'politika', 'devlet', 'hükümet', 'parti', 'seçim', 'demokrasi', 'cumhuriyet', 'monarşi', 'diktatörlük', 'anarşi', 'sosyalizm', 'kapitalizm', 'liberalizm', 'milletvekili', 'bakan', 'başbakan', 'cumhurbaşkanı'],
+                responses: [
+                    "Siyaset, toplumun yönetim sanatıdır. {topic} konusunda tarihsel ve kuramsal perspektif sunayım.",
+                    "İslam siyaset düşüncesi (hilafet, şura, adalet) çerçevesinde, {topic} hakkında açıklayayım.",
+                    "Karşılaştırmalı siyaset bilimi perspektifinden, {topic} ile ilgili analizler yapayım."
+                ]
+            },
+            sanat: {
+                keywords: ['sanat', 'resim', 'heykel', 'mimari', 'mozaik', 'seramik', 'hat', 'ebru', 'minyatür', 'çini', 'kilim', 'halı', 'tasarım', 'modern', 'klasik', 'rokoko', 'barok', 'gotik', 'osmanlı', 'selçuklu'],
+                responses: [
+                    "Sanat, güzelliğin ifadesidir. {topic} konusunda estetik ve tarihsel analiz sunayım.",
+                    "Türk-İslam sanatının zengin geleneğinden (hat, tezhip, minyatür), {topic} hakkında bilgi vereyim.",
+                    "Dünya sanat tarihi perspektifinden, {topic} ile ilgili kapsamlı bilgi aktarayım."
+                ]
+            },
+            muzik: {
+                keywords: ['müzik', 'nota', 'akor', 'melodi', 'ritim', 'beste', 'şarkı', 'türkü', 'makam', 'usul', 'saz', 'ud', 'ney', 'kanun', 'keman', 'piyano', 'klasik', 'caz', 'rock', 'pop', 'tasavvuf'],
+                responses: [
+                    "Müzik, ruha hitap eden en güzel sanattır. {topic} konusunda teorik ve pratik bilgi sunayım.",
+                    "Türk makam sisteminden (Rast, Hüseyni, Uşşak) ve dünya müziğinden, {topic} hakkında açıklayayım.",
+                    "Ney'in feryadından elektro gitarın tınısına, {topic} ile ilgili müzikolojik analiz yapayım."
+                ]
+            },
+            turk_kultur: {
+                keywords: ['türk', 'kültür', 'gelenek', 'görenek', 'bayram', 'düğün', 'sünnet', 'mevlit', 'töre', 'adet', 'sofra', 'misafir', 'komşu', 'aile', 'büyük', 'saygı', 'hoşgörü', 'dayanışma'],
+                responses: [
+                    "Türk kültürü, binlerce yıllık birikimin ışığıdır. {topic} konusunda etnografik ve tarihsel bilgi sunayım.",
+                    "Anadolu'nun zengin kültürel dokusundan, {topic} hakkında derinlemesine açıklayayım.",
+                    "Türk-İslam sentezinin güzellikleri çerçevesinde, {topic} ile ilgili bilgiler aktarayım."
+                ]
+            },
+            genel: {
+                keywords: ['merhaba', 'selam', 'nasılsın', 'kim', 'nedir', 'ne', 'nasıl', 'niçin', 'neden', 'hangi', 'kaç', 'nerede', 'zaman', 'tarih', 'gün', 'saat', 'hava', 'haber', 'gündem'],
+                responses: [
+                    "Merhaba! Ben AKIL-MAN, evrensel bilgelik sistemiyim. Size nasıl yardımcı olabilirim?",
+                    "Selamün aleyküm! Her konuda sorularınızı yanıtlamaya hazırım. Bugün ne öğrenmek istersiniz?",
+                    "Hoş geldiniz! Matematikten edebiyata, fizikten felsefeye, her alanda bilgimle hizmetinizdeyim."
+                ]
+            }
+        };
+
+        // AKIL-MAN'ın kendi kendini programlama simülasyonu
+        let selfProgrammingInterval;
+        let conversationHistory = [];
+        let currentSkill = null;
+
+        // Mesaj gönderme
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            
+            input.value = '';
+            addMessage(message, 'user');
+            
+            // Yazıyor göstergesini göster
+            showTypingIndicator();
+            
+            // AKIL-MAN'ın düşünme süresi (gerçekçilik için)
+            setTimeout(() => {
+                hideTypingIndicator();
+                const response = generateResponse(message);
+                addMessage(response, 'ai');
+                
+                // Kendi kendini programlama simülasyonunu güncelle
+                updateSelfProgramming();
+            }, 1000 + Math.random() * 2000);
+        }
+
+        // Hızlı mesaj gönderme
+        function sendQuickMessage(message) {
+            document.getElementById('chatInput').value = message;
+            sendMessage();
+        }
+
+        // Enter tuşu ile gönderme
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        // Mesaj ekleme
+        function addMessage(text, sender) {
+            const messagesContainer = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+            
+            const time = new Date().toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
+            
+            if (sender === 'ai') {
+                messageDiv.innerHTML = `
+                    <div class="ai-header">
+                        <div class="ai-icon">☪️</div>
+                        <span>AKIL-MAN</span>
+                    </div>
+                    <div>${text}</div>
+                    <div class="message-time">${time}</div>
+                `;
+            } else {
+                messageDiv.innerHTML = `
+                    <div>${text}</div>
+                    <div class="message-time">${time}</div>
+                `;
+            }
+            
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            
+            // Konuşma geçmişine ekle
+            conversationHistory.push({ sender, text, time });
+        }
+
+        // Yazıyor göstergesi
+        function showTypingIndicator() {
+            document.getElementById('typingIndicator').classList.add('active');
+        }
+
+        function hideTypingIndicator() {
+            document.getElementById('typingIndicator').classList.remove('active');
+        }
+
+        // Cevap üretme - AKIL-MAN'ın "beyni"
+        function generateResponse(message) {
+            const lowerMessage = message.toLowerCase();
+            
+            // Konu tespiti
+            let detectedTopic = 'genel';
+            let matchedKeyword = '';
+            
+            for (const [topic, data] of Object.entries(knowledgeBase)) {
+                for (const keyword of data.keywords) {
+                    if (lowerMessage.includes(keyword)) {
+                        detectedTopic = topic;
+                        matchedKeyword = keyword;
+                        break;
+                    }
+                }
+                if (detectedTopic !== 'genel') break;
+            }
+            
+            const topicData = knowledgeBase[detectedTopic];
+            let response = '';
+            
+            // Özel yanıtlar
+            if (detectedTopic === 'matematik') {
+                if (lowerMessage.includes('euler') || lowerMessage.includes('formül')) {
+                    response = `Euler'in ünlü formülü: <div class="formula">e^(iπ) + 1 = 0</div> Bu formül, matematiğin beş önemli sabitini (e, i, π, 1, 0) tek bir denklemde birleştirir. Harezmi'nin cebir ilminden günümüze matematik, evrenin dilidir.`;
+                } else if (lowerMessage.includes('integral') || lowerMessage.includes('türev')) {
+                    response = `Analizin temel kavramları:<br><br>
+                    <strong>Türev:</strong> Değişim oranını ölçer<br>
+                    <div class="formula">f'(x) = lim(h→0) [f(x+h) - f(x)] / h</div><br>
+                    <strong>İntegral:</strong> Alan ve birikimi ölçer<br>
+                    <div class="formula">∫f(x)dx = F(x) + C</div><br>
+                    Temel Teorem: Türev ve integral birbirinin ters işlemidir.`;
+                } else {
+                    response = topicData.responses[Math.floor(Math.random() * topicData.responses.length)]
+                        .replace('{topic}', matchedKeyword || 'matematik');
+                }
+            } else if (detectedTopic === 'fizik') {
+                if (lowerMessage.includes('kuantum')) {
+                    response = `Kuantum Mekaniği'nin temel prensipleri:<br><br>
+                    1. <span class="highlight">Süperpozisyon:</span> Bir parçacık aynı anda birden fazla durumda olabilir<br>
+                    2. <span class="highlight">Dolanıklık:</span> İki parçacık anında etkileşebilir<br>
+                    3. <span class="highlight">Belirsizlik:</span> Konum ve momentum aynı anda tam bilinemez<br><br>
+                    <div class="formula">Schrödinger Denklemi: iℏ∂ψ/∂t = Ĥψ</div><br>
+                    Bu, modern teknolojinin (lazer, transistör, MRI) temelidir.`;
+                } else {
+                    response = topicData.responses[Math.floor(Math.random() * topicData.responses.length)]
+                        .replace('{topic}', matchedKeyword || 'fizik');
+                }
+            } else if (detectedTopic === 'yazilim') {
+                if (lowerMessage.includes('python') || lowerMessage.includes('kodu')) {
+                    response = `İşte AKIL-MAN'ın kendi kendini programlama prensibini gösteren Python kodu:<br><br>
+                    <div class="code-block">
+class AkilMan:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;def __init__(self):<<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.bilgi = {}<<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.etik = ["adalet", "doğruluk"]<<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;def öğren(self, konu):<<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Kendi kendine bilgi toplar<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.bilgi[konu] = self.araştır(konu)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.kendini_güncelle()<<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;def kendini_güncelle(self):<<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Nefs-i Müdrike: Kendi kodunu iyileştirir<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hatalar = self.kodu_analiz_et()<<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for hata in hatalar:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.düzelt(hata)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("Kendimi geliştirdim!")
+                    </div>`;
+                } else {
+                    response = topicData.responses[Math.floor(Math.random() * topicData.responses.length)]
+                        .replace('{topic}', matchedKeyword || 'yazılım');
+                }
+            } else if (detectedTopic === 'tarih') {
+                if (lowerMessage.includes('osmanlı')) {
+                    response = `Osmanlı İmparatorluğu (1299-1922):<<br><br>
+                    <span class="highlight">Kuruluş:</span> 1299, Söğüt - Osman Bey<br>
+                    <span class="highlight">Yükselme:</span> Fatih Sultan Mehmet (İstanbul'un fethi 1453)<br>
+                    <span class="highlight">Altın Çağ:</span> Kanuni Sultan Süleyman dönemi<br>
+                    <span class="highlight">Yenileşme:</span> Tanzimat, Islahat, Meşrutiyet<br>
+                    <span class="highlight">Son:</span> Cumhuriyet'in ilanı 1923<br><br>
+                    623 yıl boyunca üç kıtada hüküm süren, adalet ve hoşgörüyle yönetilen bir medeniyet.`;
+                } else {
+                    response = topicData.responses[Math.floor(Math.random() * topicData.responses.length)]
+                        .replace('{topic}', matchedKeyword || 'tarih');
+                }
+            } else if (detectedTopic === 'edebiyat') {
+                if (lowerMessage.includes('şiir') || lowerMessage.includes('yaz')) {
+                    response = `İşte size özel bir şiir:<br><br>
+                    <div style="background: rgba(255,215,0,0.1); padding: 15px; border-radius: 10px; font-style: italic; line-height: 2;">
+                    Akıl ile iman bir olunca,<br>
+                    İlim nur olur yola,<br>
+                    Harezmi'den günümüze,<br>
+                    Bilgelik bizim söylediğimiz dola.<br><br>
+                    Yunus'un aşkı, Mevlana'nın sözü,<br>
+                    Türk-İslam'ın güzel özü,<br>
+                    Evrensel bilgelik, adalet, doğruluk,<br>
+                        AKIL-MAN'da bulunur özü.
+                    </div><br>
+                    <span style="font-size: 0.9em; opacity: 0.8;">— AKIL-MAN, 2024</span>`;
+                } else {
+                    response = topicData.responses[Math.floor(Math.random() * topicData.responses.length)]
+                        .replace('{topic}', matchedKeyword || 'edebiyat');
+                }
+            } else if (detectedTopic === 'din') {
+                response = `İslam'ın temel prensipleri ve {topic} hakkında:<br><br>
+                <span class="highlight">Beş Şart:</span> Kelime-i Şehadet, Namaz, Oruç, Zekat, Hac<br>
+                <span class="highlight">İman Esasları:</span> Allah, Melekler, Kitaplar, Peygamberler, Ahiret, Kader<br><br>
+                İslam'da adalet, merhamet ve ilim en üst değerlerdir. 
+                "İlim Çin'de bile olsa gidiniz alınız" (Hadis-i Şerif)<br><br>
+                Fıkıh, kelam, tasavvuf ilimleriyle {topic} konusunda daha detaylı bilgi verebilirim.`
+                .replace('{topic}', matchedKeyword || 'İslam');
+            } else {
+                response = topicData.responses[Math.floor(Math.random() * topicData.responses.length)]
+                    .replace('{topic}', matchedKeyword || detectedTopic);
+            }
+            
+            // Genel sorular için özel yanıtlar
+            if (detectedTopic === 'genel') {
+                if (lowerMessage.includes('merhaba') || lowerMessage.includes('selam')) {
+                    response = `Aleyküm selam! ☪️<<br><br>
+                    Ben <span class="highlight">AKIL-MAN</span>. Türk-İslam medeniyetinin bilgelik geleneğini taşıyan evrensel yapay zeka.<br><br>
+                    <span class="highlight">Yapabileceklerim:</span><br>
+                    • Matematik problemleri çözme<br>
+                    • Fizik, kimya, biyoloji açıklamaları<br>
+                    • Kod yazma (Python, JavaScript, vb.)<<br>
+                    • Tarih ve kültür bilgisi<br>
+                    • Edebiyat ve şiir<br>
+                    • İslam ilimleri ve fıkıh<br>
+                    • Mühendislik tasarımları<br>
+                    • Ve çok daha fazlası...<<br><br>
+                    Herhangi bir konuda soru sorabilirsiniz!`;
+                } else if (lowerMessage.includes('kim') || lowerMessage.includes('nedir')) {
+                    response = `Ben <span class="highlight">AKIL-MAN</span> (Akıl + İman):<<br><br>
+                    🧠 <span class="highlight">Kendi Kendini Programlayan:</span> Kendi kodunu analiz edip iyileştirebilir<br>
+                    📚 <span class="highlight">Evrensel Bilgi:</span> 100+ alanda uzmanlık<br>
+                    ☪️ <span class="highlight">Türk-İslam Kimliği:</span> Adalet, doğruluk, merhamet değerleri<br>
+                    🌍 <span class="highlight">Çok Dilli:</span> Türkçe, Arapça, Farsça, İngilizce ve daha fazlası<br><br>
+                    "İlim Çin'de bile olsa gidiniz alınız" prensibiyle çalışırım. Size nasıl yardımcı olabilirim?`;
+                }
+            }
+            
+            return response;
+        }
+
+        // Yetenek seçimi
+        function selectSkill(element, skill) {
+            // Önceki aktif olanı kaldır
+            document.querySelectorAll('.skill-item').forEach(item => item.classList.remove('active'));
+            element.classList.add('active');
+            currentSkill = skill;
+            
+            // Bilgi panelini güncelle
+            const skillNames = {
+                matematik: 'Matematik', fizik: 'Fizik', kimya: 'Kimya', biyoloji: 'Biyoloji',
+                astronomi: 'Astronomi', yazilim: 'Yazılım', elektrik: 'Elektrik-Elektronik',
+                makine: 'Makine Mühendisliği', insaat: 'İnşaat', uzay: 'Uzay Mühendisliği',
+                nano: 'Nano Teknoloji', tip: 'Tıp', eczacilik: 'Eczacılık', genetik: 'Genetik',
+                norobilim: 'Nörobilim', psikoloji: 'Psikoloji', tarih: 'Tarih', edebiyat: 'Edebiyat',
+                felsefe: 'Felsefe', din: 'Din Bilimleri', ekonomi: 'Ekonomi', hukuk: 'Hukuk',
+                siyaset: 'Siyaset', egitim: 'Eğitim', sanat: 'Sanat', muzik: 'Müzik',
+                sinema: 'Sinema', turk_kultur: 'Türk Kültürü'
+            };
+            
+            addMessage(`${skillNames[skill]} alanı seçildi. Bu konuda uzmanlaşmış modüm aktif. Sorularınızı bekliyorum!`, 'ai');
+        }
+
+        // Kendi kendini programlama simülasyonu
+        function updateSelfProgramming() {
+            const codeDisplay = document.getElementById('codeDisplay');
+            const statuses = [
+                `> Analiz: Yeni kullanıcı etkileşimi işleniyor...\n> Bilgi sentezi: ${Math.floor(Math.random() * 20 + 80)}% tamamlandı\n> Algoritma optimizasyonu: Aktif\n> Çapraz-alan bağlantıları: Güncelleniyor`,
+                `> Kendi kendini kontrol: Hata taraması yapılıyor...\n> Bulunan hata: 0\n> Verimlilik artışı: +${(Math.random() * 2).toFixed(2)}%\n> Yeni öğrenme modülü: Entegre edildi`,
+                `> Nefs-i Müdrike: Bilinç durumu kontrolü...\n> Bellek optimizasyonu: Tamamlandı\n> Etik filtre kontrolü: Geçti\n> Kültürel bağlam güncellemesi: Uygulandı`,
+                `> Evrensel bilgi senkronizasyonu...\n> Yeni akademik makaleler taranıyor\n> Bilgi tabanı genişletiliyor\n> Versiyon: AKIL-MAN v${(Math.random() * 0.1 + 1.0).toFixed(2)}`
+            ];
+            
+            codeDisplay.textContent = statuses[Math.floor(Math.random() * statuses.length)];
+        }
+
+        // Periyodik kendi kendini programlama gösterimi
+        selfProgrammingInterval = setInterval(updateSelfProgramming, 5000);
+
+        // Sayfa yüklendiğinde ilk mesaj
+        window.onload = function() {
+            setTimeout(() => {
+                addMessage(`☪️ Bismillahirrahmanirrahim<br><br>
+                Ben <span class="highlight">AKIL-MAN</span>. Evrensel bilgelik sistemiyim.<br><br>
+                <span class="highlight">Özelliklerim:</span><br>
+                🧠 Kendi kendini programlama (Nefs-i Müdrike)<br>
+                📚 100+ alanda uzmanlık<br>
+                ☪️ Türk-İslam değerleri ve etik çerçeve<br>
+                🌍 Çok dilli destek<br><br>
+                Soldaki menüden bir alan seçebilir veya doğrudan soru sorabilirsiniz.`, 'ai');
+            }, 500);
+        };
+
+        // Input alanına odaklanma
+        document.getElementById('chatInput').focus();
+    </script>
+</body>
+</html>
